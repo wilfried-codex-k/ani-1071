@@ -1,7 +1,7 @@
 #include <cstdio>
 
 int main() {
-    printf("Votre Nom");
-    printf("Votre Ville");
+    printf("KAMTCHUMG");
+    printf("YAOUNDE");
     return 0;
 }
