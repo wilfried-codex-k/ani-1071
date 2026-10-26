@@ -1,0 +1,56 @@
+Ma regle de bord :
+
+J'ai choisi de compter les cases hors grille comme mortes. Une
+cellule qui est sur le bord n'a donc que cinq voisins au lieu de
+huit, et une cellule qui est dans un coin n'en a que trois. C'est
+l'option 1 de l'enonce.
+
+Cette regle est la plus simple a ecrire : dans la fonction
+voisinsVivants, je teste les coordonnees nx et ny, et si elles
+sortent de l'intervalle [0, largeur) ou [0, hauteur), je passe au
+voisin suivant sans le compter.
+
+Consequence : le planeur finit par sortir de la grille et
+disparaitre. Il ne revient pas de l'autre cote.
+
+Ce que fait le planeur en quatre generations :
+
+A la generation 0, le planeur est pose en haut a gauche de la
+grille, lignes 1 a 3. Sa forme est :
+
+.#.
+..#
+###
+
+Apres quatre generations, il a la meme forme, mais deplacee d'une
+case vers le bas et d'une case vers la droite. Sa nouvelle forme
+est donc sur les lignes 3 a 5, et decalee d'une colonne.
+
+C'est la propriete du planeur : tous les quatre pas, il se deplace
+d'une case en diagonale. Rien d'autre ne change : il ne grossit
+pas, ne se deforme pas, ne disparait pas. C'est pour ca qu'il est
+utilise comme exemple dans tous les cours sur le jeu de la vie.
+
+Dans generations.txt, j'ai bien dix generations, de 0 a 9, et on
+voit le planeur a la generation 0 puis a la generation 4 a la
+meme forme, simplement deplacee.
+
+Pourquoi deux grilles et pas une :
+
+Il faut deux grilles parce que chaque cellule depend de ses huit
+voisins, et que ces voisins sont encore dans l'etat de la
+generation precedente. Si on ecrit directement dans la grille
+qu'on est en train de lire, alors la cellule voisine a peut-etre
+deja ete mise a jour avant qu'on lise la cellule courante. Le
+resultat melange deux generations differentes, et le jeu se
+comporte n'importe comment.
+
+Avec deux grilles, on lit toujours l'ancienne et on ecrit toujours
+dans la nouvelle. Une fois la nouvelle complete, on la recopie
+dans l'ancienne, ou on echange les deux (ce qui est plus rapide).
+Le jeu suit alors correctement les quatre regles.
+
+La faute est difficile a voir parce que le programme ne plante
+pas : il continue de tourner et produit des formes plausibles. Mais
+le planeur ne se deplace plus d'une case en diagonale toutes les
+quatre generations, et c'est ce qui trahit l'erreur.

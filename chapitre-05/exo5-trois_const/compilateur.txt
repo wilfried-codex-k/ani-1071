@@ -1,0 +1,16 @@
+a :
+*a = 5; -> test_a.cpp:4:8: error: read-only variable is not assignable
+a = &y; -> acceptée (warning normal si 'a' n'est pas utilisé ensuite)
+
+b :
+*b = 5; -> acceptée
+b = &y; -> troisconst.cpp:12:5: error: cannot assign to variable 'b' with const-qualified type 'int *const'
+
+c :
+*c = 5; -> troisconst.cpp:17:6: error: read-only variable is not assignable
+c = &y; -> troisconst.cpp:18:5: error: cannot assign to variable 'c' with const-qualified type 'const int *const'
+
+Règle :
+Un const placé avant l'étoile (const int*) protège la valeur désignée : on ne peut pas faire *p = ... mais on peut déplacer le pointeur.
+Un const placé après l'étoile (int* const) protège le pointeur : on peut modifier la valeur avec *p = ... mais on ne peut pas le faire pointer vers autre chose.
+Quand il y a les deux (const int* const), on ne peut ni modifier la valeur, ni déplacer le pointeur.

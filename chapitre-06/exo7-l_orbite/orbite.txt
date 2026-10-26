@@ -1,0 +1,39 @@
+Pas choisi :
+dt = 0.01.
+Avec une vitesse de 1 unite par unite de temps et un rayon de 100 unites, la circonference fait environ 628 unites. Un tour prend donc environ 628 pas, ce qui fait plusieurs tours en 10000 pas.
+
+Distances :
+Pas 0 : expl = 100.0000, semi = 100.0000
+Pas 500 : expl = 100.0003, semi = 99.9998
+Pas 1000 : expl = 100.0005, semi = 99.9995
+Pas 2000 : expl = 100.0010, semi = 99.9990
+Pas 3000 : expl = 100.0016, semi = 99.9985
+Pas 4000 : expl = 100.0022, semi = 99.9981
+Pas 5000 : expl = 100.0028, semi = 99.9976
+Pas 6000 : expl = 100.0035, semi = 99.9972
+Pas 7000 : expl = 100.0043, semi = 99.9968
+Pas 8000 : expl = 100.0052, semi = 99.9964
+Pas 9000 : expl = 100.0062, semi = 99.9961
+Pas 10000 : expl = 100.0074, semi = 99.9958
+
+Pas dix fois plus petit :
+Apres 10000 pas (dt = 0.001) :
+expl = 100.0001, semi = 100.0000
+
+Dessin :
+(le dessin de l'image est recopie ci-dessous)
+                                        
+
+
+                        SE              
+                         SE             
+                          S             
+                          SE            
+                           S            
+                           S            
+                           SE           
+
+
+Laquelle tient :
+La methode semi-implicite est celle qui tient le mieux son orbite. Avec dt = 0.01, la distance de la planete en euler explicite augmente (elle s'echappe vers l'exterieur), passant de 100.0000 a 100.0074. La distance de la planete en semi-implicite diminue tres legerement (elle spirale vers l'interieur), passant de 100.0000 a 99.9958. L'energie n'est conservee par aucune des deux methodes (ce sont des methodes d'integration approchees), mais l'erreur de la semi-implicite est plus stable et moins dangereuse que l'explicite qui fait deriver la trajectoire vers l'infini.
+Avec dt = 0.001, les deux methodes se rapprochent de 100.0000 car le pas est plus petit, donc l'erreur d'integration diminue.

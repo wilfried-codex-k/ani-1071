@@ -1,0 +1,28 @@
+Sortie :
+Avant pointeurs : 1 2
+Apres pointeurs : 2 1
+Avant references : 2 1
+Apres references : 1 2
+Avant double : 3.14 1.59
+Apres double : 1.59 3.14
+Avant char : A B
+Apres char : B A
+
+À l'appel :
+Dans main, j'ai fait deux appels pour les entiers.
+Le premier est echanger(&x, &y). Le symbole & devant les variables montre
+directement au lecteur qu'on envoie l'adresse de x et de y. On voit tout
+de suite que la fonction va agir sur les variables d'origine.
+Le deuxieme est echanger(x, y). Il n'y a pas de &, donc a la lecture on
+pourrait croire que la fonction recoit des copies. Mais le compilateur
+sait qu'une version avec des references (int& a, int& b) existe, et il
+choisit celle-la. Pour le lecteur, c'est moins explicite que les pointeurs.
+
+Ce qui change :
+Ce qui change d'un type a l'autre, c'est le type de la variable
+temporaire (int, double ou char) utilisee pour faire l'echange.
+Ce qui reste identique, c'est la mecanique : les trois lignes
+temp = a, a = b, b = temp. Que ce soit avec des pointeurs (int*) ou des
+references (int&, double&, char&), la fonction modifie bien les variables
+de l'appelant. Pour les doubles et les chars, j'ai utilise des references
+comme pour le deuxieme echanger des entiers.

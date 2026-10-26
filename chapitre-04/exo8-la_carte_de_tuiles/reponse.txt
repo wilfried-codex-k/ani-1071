@@ -1,0 +1,28 @@
+Le calcul de mon indice :
+
+La case de la ligne y et de la colonne x vit a l'indice y * largeur
++ x. Par exemple, dans une carte de largeur 10, la case de la ligne
+2, colonne 3 est a l'indice 2 * 10 + 3 = 23. La largeur est celle de
+la carte, pas de la ligne de texte, et elle est passee en parametre a
+la fonction tuile. Le calcul se fait par multiplication, pas par
+addition repetee.
+
+Pourquoi un seul tableau et pas un tableau de tableaux :
+
+Parce que la carte est rangee en memoire de facon lineaire, ligne
+apres ligne. Un tableau a deux dimensions en C++ est en realite un
+tableau de tableaux, ce qui ajoute un niveau d'indirection a chaque
+acces. Avec un seul tableau et un calcul d'indice, chaque acces est
+direct : une multiplication, une addition, et on lit la case. C'est
+plus simple a passer a une fonction, plus simple a copier, et plus
+proche de la facon dont la memoire est reellement organisee.
+
+Ce qui se passe si je confonds largeur et hauteur :
+
+Si j'ecris x * hauteur + y au lieu de y * largeur + x, la carte se
+lit de travers. Les indices deviennent faux des que largeur et
+hauteur different, et certaines cases sont lues plusieurs fois alors
+que d'autres ne sont jamais lues. Si la carte est presque carree, la
+faute passe inapercue au debut. Si largeur et hauteur sont tres
+differentes, les indices sortent du tableau et on lit de la memoire
+qui n'appartient pas a la carte, souvent sans message d'erreur.

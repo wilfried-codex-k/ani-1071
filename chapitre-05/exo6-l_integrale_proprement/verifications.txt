@@ -1,0 +1,13 @@
+Integrale : sin=2.0000, carre=0.3328
+Derivee : sin'(0)=1.0000
+Zero : 1.414214 (ecart avec sqrt(2) : 0.000000)
+
+Arret :
+Ma boucle de dichotomie s'arrete quand la difference (b - a) devient plus petite que 1e-7. L'ecart entre le resultat trouve (1.414214) et la vraie racine de 2 (sqrt(2)) est de 0.000000 a l'affichage, ce qui montre que la precision est bonne.
+
+Sans pointeur :
+Si integrale choisissait la fonction avec un numero au lieu d'un pointeur, et que je voulais integrer une quatrieme fonction (par exemple cos), je devrais :
+1. Ajouter un nouveau numero (par exemple case 4:).
+2. Modifier le code source de integrale pour ajouter ce choix.
+3. Recompiler.
+Avec un pointeur de fonction, je n'ai pas besoin de modifier integrale. J'ecris juste ma nouvelle fonction cos, et je l'appelle avec integrale(cos, 0.0, 1.0). Integrale ne sait pas ce qu'elle calcule, elle sait juste ou se trouve la fonction.

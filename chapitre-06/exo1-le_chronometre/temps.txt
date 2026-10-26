@@ -1,0 +1,19 @@
+-O0 :
+total = 500000500000
+Mesures de la boucle : 0.002337 s, 0.002372 s, 0.002366 s
+
+-O2 :
+total = 500000500000
+Mesures de la boucle : 0.000000 s, 0.000000 s, 0.000000 s
+
+Un printf :
+Les cinq mesures :
+0.000103 s
+0.000140 s
+0.000127 s
+0.000112 s
+0.000102 s
+Le programme écrivait dans une fenêtre de terminal (PowerShell).
+
+Le plus cher :
+D'après les mesures, c'est le printf qui coûte le plus cher en temps réel. En -O0, la boucle de 1 million d'additions prend environ 0.0023 s, alors qu'un seul printf prend environ 0.0001 s. Mais ce qui est frappant, c'est l'effet de -O2 : la boucle passe à 0.000000 s. Le compilateur a vu que le résultat de la boucle était prévisible (la somme de 1 à 1 000 000 vaut 500 000 500 000), il a donc calculé le résultat à la compilation et a supprimé la boucle. En revanche, le printf ne peut pas être supprimé car il a un effet observable (l'affichage).

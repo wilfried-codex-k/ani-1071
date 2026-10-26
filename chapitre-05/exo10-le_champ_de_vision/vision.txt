@@ -1,0 +1,9 @@
+Devant : (10, 0) -> oui
+Côté : (0, 10) -> non
+Derrière : (-10, 0) -> non
+Bord : 
+- Juste dedans (8.75, 4.84) -> oui
+- Juste dehors (8.57, 5.15) -> non
+
+Pourquoi 30 :
+Le champ de vision total fait 60 degrés. Cela signifie que le garde voit 30 degrés d'un côté et 30 degrés de l'autre par rapport à sa direction. Le produit scalaire de deux vecteurs unitaires donne le cosinus de leur angle. Plus l'angle est grand, plus le cosinus est petit. Pour dire "est-ce que l'angle est inférieur ou égal à 30 degrés ?", on regarde si le cosinus trouvé est supérieur ou égal au cosinus de 30 degrés (cos(30) ≈ 0.866). Si on comparaît au cosinus de 60 (0.5), le garde verrait à 60 degrés de chaque côté, soit un champ total de 120 degrés.

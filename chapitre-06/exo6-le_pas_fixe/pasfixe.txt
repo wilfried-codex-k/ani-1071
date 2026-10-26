@@ -1,0 +1,17 @@
+Attendu :
+La boucle tourne pendant 10 secondes, et on veut 120 pas de physique par seconde.
+Le calcul est donc : 10 * 120 = 1200 appels a mettreAJour.
+
+Attentes courtes :
+Attente maximale : 0.001 s
+Nombre de tours : 19790
+Nombre d'appels : 1199
+
+Attentes longues :
+Attente maximale : 0.050 s
+Nombre de tours : 608
+Nombre d'appels : 1197
+
+Pourquoi :
+Les appels ne suivent pas les tours parce que la boucle de rendu (dessiner/attendre) tourne a la vitesse de la machine, alors que la boucle de physique tourne a un rythme fixe. Avec des attentes courtes, on a fait 19790 tours pour 1199 appels. Avec des attentes longues, on a fait 608 tours pour 1197 appels. Le nombre de tours a ete divise par 32, mais la physique a fait le meme nombre d'appels.
+L'ecart restant avec les 1200 calcules (1199 et 1197 au lieu de 1200) vient du fait que la boucle s'arrete a la fin des 10 secondes. A ce moment precis, il reste une fraction de temps dans l'accumulateur, qui n'a pas encore atteint la taille d'un PAS (1/120e de seconde). Cette fraction est perdue a la fin du programme.

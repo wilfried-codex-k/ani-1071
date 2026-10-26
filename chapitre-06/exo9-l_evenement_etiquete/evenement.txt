@@ -1,0 +1,25 @@
+Sortie :
+Touche : code='A', pressee=1
+Souris : x=100, y=200, bouton=1
+Redimension : largeur=800, hauteur=600
+Touche : code='a', pressee=1
+Touche : code='b', pressee=0
+Touche : code='c', pressee=1
+Touche : code='d', pressee=0
+Touche : code='e', pressee=1
+Touche : code='f', pressee=0
+Touche : code='g', pressee=1
+
+Tailles :
+Taille de Evenement : 16
+Taille de touche : 2
+Taille de souris : 12
+Taille de redimension : 8
+
+Explication :
+La taille de Evenement est de 16 octets. Elle se compose de l'etiquette (enum class, qui fait 1 octet) suivie de l'union. Mais le compilateur ajoute des octets de remplissage (padding) pour aligner l'union sur 4 octets. L'union prend la taille de son plus gros membre, qui est "souris" (12 octets). Donc 1 (etiquette) + 3 (padding) + 12 (union) = 16 octets.
+
+Lecture fautive :
+Valeur lue (decimal) : 344
+Valeur lue (hexadecimal) : 158
+J'ai ecrit le caractere 'X' (code ASCII 88, soit 0x58 en hexadecimal) dans le premier octet, et 'true' (valeur 1, soit 0x01) dans le deuxieme octet. Comme les membres de l'union partagent la meme memoire, quand je lis l'entier souris.x (qui fait 4 octets), je lis les octets 0x58 et 0x01. Sur une machine petit-boutiste (little-endian) comme Windows, le nombre forme est (1 * 256) + 88 = 344. En hexadecimal, cela s'ecrit 0x158.

@@ -1,0 +1,12 @@
+structures, position, essai 1 : 50590 us
+structures, position, essai 2 : 51058 us
+structures, position, essai 3 : 50936 us
+structures, vie, essai 1 : 28501 us
+structures, vie, essai 2 : 28655 us
+structures, vie, essai 3 : 34392 us
+paralleles, position, essai 1 : 37630 us
+paralleles, position, essai 2 : 36308 us
+paralleles, position, essai 3 : 36268 us
+paralleles, vie, essai 1 : 29255 us
+paralleles, vie, essai 2 : 35233 us
+paralleles, vie, essai 3 : 30425 us

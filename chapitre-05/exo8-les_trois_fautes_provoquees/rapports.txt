@@ -1,0 +1,14 @@
+Fuite :
+sans outil : Le programme affiche "Fin du programme" et se termine normalement. Rien ne signale qu'il a oublie de rendre la memoire.
+avec outil : L'outil n'a rien affiche de special, le programme s'est termine normalement. Sur Windows, l'outil -fsanitize=address ne traque pas les fuites de memoire par defaut.
+
+Pendant :
+sans outil : Le programme affiche "Valeur lue apres delete : 42" sans planter. La memoire a bien ete rendue, mais le systeme ne l'a pas encore reutilisee, donc on arrive a relire l'ancienne valeur.
+avec outil : L'outil stoppe le programme et affiche "ERROR: AddressSanitizer: heap-use-after-free on address...".
+
+Double :
+sans outil : Le programme affiche "Premiere liberation faite" puis s'arrete brutalement (le processus est tue par le systeme ou plante silencieusement) sans afficher la suite.
+avec outil : L'outil stoppe le programme et affiche "ERROR: AddressSanitizer: attempting double-free on 0x1251f1fa0010...".
+
+La pire :
+Pour moi, la pire des trois fautes est la fuite de memoire. Pourquoi ? Parce que c'est la seule qui ne se voit pas du tout. Sans outil, le programme affiche "Fin du programme" et on croit que tout va bien. Le pointeur pendant et la double liberation font planter le programme ou affichent une valeur bizarre, ce qui nous met la puce a l'oreille. Mais une fuite ne fait aucun bruit. Le programme tourne, mais il consomme de plus en plus de memoire. Sur un jeu qui tourne pendant des heures, la fuite va finir par saturer la memoire et faire planter tout l'ordinateur, alors qu'on ne saura pas d'ou ca vient.

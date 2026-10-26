@@ -1,0 +1,14 @@
+Sortie :
+somme : 56
+maximum : 19
+inverser : 15 3 19 7 12
+longueur(bonjour) : 7
+strlen(bonjour) : 7
+longueur(Yaoundé) : 8
+strlen(Yaoundé) : 8
+
+Yaoundé :
+Ma fonction longueur rend 8. Ce n'est pas le nombre de lettres visibles, mais le nombre d'octets. En encodage UTF-8 (utilisé par la console Windows), la lettre "é" est codée sur deux octets. Il y a donc 7 lettres (Y, a, o, u, n, d, é) + 1 octet pour l'accent = 8 octets. Ma fonction compte les octets jusqu'au caractère zéro, exactement comme strlen.
+
+Pourquoi pas const :
+inverser ne peut pas recevoir un const int* parce que son travail est de modifier le tableau sur place (échanger les cases). Si on lui passait un const int*, le compilateur refuserait toute écriture du type *t = ... ou *fin = ..., car const interdit de modifier la valeur pointée. inverser a besoin d'un pointeur modifiable (int*).

@@ -1,0 +1,23 @@
+Prévu :
+Depart : {3.00, 4.00}
+Apres bougerCopie : {3.00, 4.00}
+Apres bougerRef : {4.00, 4.00}
+
+Obtenu :
+Depart : {3.00, 4.00}
+Apres bougerCopie : {3.00, 4.00}
+Apres bougerRef : {4.00, 4.00}
+Longueur : 5.66
+
+Message :
+copie.cpp:18:10: error: cannot assign to variable 'p' with const-qualified type 'const Vec2 &'
+   18 |      p.x = 0; // LIGNE A DECOMMENTER POUR LE TEST D'ERREUR
+      |      ~~~ ^
+copie.cpp:17:32: note: variable 'p' declared const here
+   17 | double longueurRef(const Vec2& p) {
+      |                    ~~~~~~~~~~~~^
+
+Pourquoi :
+La fonction bougerCopie recoit une copie de la structure. Quand elle fait p.x + 1, elle modifie sa copie locale, pas le v de main. C'est pour ca que v reste a 3.00.
+La fonction bougerRef recoit une reference (Vec2&). Le p dans la fonction est un autre nom pour le v de main. Quand on fait p.x + 1, on modifie directement v. C'est pour ca que v passe a 4.00.
+La fonction longueurRef recoit une reference constante (const Vec2&). C'est une bonne pratique : ca evite de copier la structure (ce qui prend du temps pour une grosse structure) tout en garantissant au lecteur que la fonction ne va pas la modifier. Le const interdit d'ecrire p.x = 0;, d'ou l'erreur du compilateur.

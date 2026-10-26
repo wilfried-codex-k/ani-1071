@@ -1,0 +1,9 @@
+v0 : 7.672027
+1/120 : 2.968077
+1/30 : 2.873487
+Mon pas (1/1000) : 2.996164
+
+L'écart vient :
+L'ecart avec les 3 metres vient de la simulation, pas de la formule. La formule v0 = sqrt(2 * g * h) est mathematiquement exacte.
+Ce qui le prouve, c'est que plus le pas de temps (dt) est petit, plus on se rapproche de 3.0. Avec un pas de 1/30, on obtient 2.873 (loin de 3). Avec un pas de 1/1000, on obtient 2.996 (presque 3).
+L'euler semi-implicite avance par bonds. Avec un grand pas, la position saute par-dessus le sommet exact de la parabole sans l'atteindre. Avec un pas plus petit, on echantillonne la courbe de plus pres et on attrape un point plus haut. L'ecart est une erreur d'echantillonnage.

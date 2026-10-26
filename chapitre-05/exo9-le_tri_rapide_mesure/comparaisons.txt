@@ -1,0 +1,14 @@
+Aleatoire :
+Taille 100 : rapide = 832, selection = 4950
+Taille 1000 : rapide = 12477, selection = 499500
+Taille 10000 : rapide = 183357, selection = 49995000
+Taille 100000 : rapide = 2121925, selection = 4999950000
+
+Deja trie :
+Taille 10000 (deja trie) : rapide = 125439
+
+Pourquoi :
+Quand le tableau est deja trie et qu'on prend le dernier element comme pivot, le pivot est toujours le plus grand element du sous-tableau. Le partage met toutes les autres cases a gauche et zero case a droite. L'intervalle ne diminue que d'une case a chaque etape, ce qui donne n * (n-1) / 2 comparaisons, soit exactement le meme nombre que le tri par selection (49995000 pour 10000 cases).
+
+Mon pivot :
+J'ai choisi de prendre le milieu du tableau (t[bas + (haut - bas) / 2]) au lieu du dernier element. Avec ce pivot, un tableau deja trie est coupe en deux a chaque etape. Le nombre de comparaisons sur 10000 cases deja triees tombe a 125439, contre 49995000 avec l'ancien pivot. L'effondrement est evite.

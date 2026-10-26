@@ -1,0 +1,15 @@
+Prédictions :
+5 9
+9 9
+9 1
+
+Obtenu :
+5 9
+9 9
+9 1
+
+Écarts :
+Aucune prédiction fausse. J'avais bien compris que *p = *q copie la valeur, alors que p = q copie l'adresse.
+
+p = q :
+Cette instruction change l'adresse que contient p. Avant, p pointait vers a. Après, p pointe vers b. Elle ne change ni la valeur de a ni celle de b. C'est la ligne suivante (*p = 1) qui change b, parce que p pointe maintenant vers b.

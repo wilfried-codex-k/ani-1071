@@ -1,0 +1,19 @@
+Les quatre :
+length({3, 4}) = 5
+dot({1, 0}, {0, 1}) = 0
+rotate({1, 0}, radians(90)) = {6.123233995736766e-17, 1}
+reflect({1, -1}, {0, 1}) = {1, 1}
+
+Mes essais :
+add({1, 2}, {3, 4}) = {4, 6}
+sub({5, 5}, {2, 3}) = {3, 2}
+scale({2, 3}, 2.0) = {4, 6}
+normalize({3, 4}) = {0.59999999999999998, 0.80000000000000004}
+lerp({0, 0}, {10, 20}, 0.5) = {5, 10}
+perp({2, 3}) = {-3, 2}
+
+Epsilon :
+Les deux membres de rotate({1, 0}, radians(90)) :
+x = 6.123233995736766e-17
+y = 1
+J'ai choisi un epsilon de 1e-10. La valeur théorique de x devrait être 0, mais à cause des arrondis sur les nombres à virgule (et de la valeur approximative de PI), on obtient un nombre extrêmement petit (10^-17). 1e-10 est largement suffisant pour dire que 6.12e-17 est "égal à zéro" dans le contexte d'un jeu vidéo, sans risquer de confondre deux vrais vecteurs différents.

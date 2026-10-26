@@ -1,0 +1,54 @@
+Mes douze mesures :
+
+J'ai chronomètre les quatre boucles trois fois chacune, en
+microsecondes, avec le programme compile en -O0.
+
+structures, position : 50590, 51058, 50936
+structures, vie      : 28501, 28655, 34392
+paralleles, position : 37630, 36308, 36268
+paralleles, vie      : 29255, 35233, 30425
+
+Les valeurs de la boucle position sont stables pour les deux
+dispositions. Celles de la boucle vie deviennent moins stables
+quand la machine est chargee, mais restent dans le meme ordre de
+grandeur.
+
+Ou l'ecart est le plus grand, et pourquoi :
+
+C'est sur la boucle position que l'ecart est le plus net : les
+tableaux paralleles prennent environ 36 700 us, contre 50 900 us
+pour le tableau de structures, soit un gain d'environ 28 pour cent.
+
+Cet ecart vient de la facon dont les donnees sont rangees en
+memoire. Dans un tableau de structures, chaque particule est un bloc
+de plusieurs champs colles : quand on lit x et y, on charge aussi
+vx, vy, vie et couleur dans le cache, meme si on n'en a pas besoin
+maintenant. Les donnees utiles sont donc dispersees.
+
+Dans les tableaux paralleles, chaque champ a son propre tableau.
+Quand on lit px[i] et py[i], on charge des cases contigues, et le
+cache est utilise presque entierement pour les valeurs qu'on va
+lire au tour suivant.
+
+Sur la boucle vie, l'ecart est moins net. Le champ vie est un int,
+et un cache line fait 64 octets. Avec un tableau parallele, une
+seule lecture de cache ramene 16 valeurs de vie. Avec un tableau de
+structures, chaque particule fait environ 40 octets, donc une cache
+line ne contient qu'une ou deux particules. Le gain theorique
+existe, mais il est plus petit, et sur ma machine il est masque par
+le bruit de mesure.
+
+Quand je choisirais quand meme le tableau de structures :
+
+Je garderais le tableau de structures quand les champs d'une meme
+particule sont presque toujours lus ensemble. Par exemple, si je
+dois lire x, y, vx et vy a chaque tour, la structure me donne les
+quatre valeurs dans un seul bloc contigu, ce qui est exactement ce
+que le cache aime. Les tableaux paralleles obligent alors a sauter
+d'un tableau a l'autre.
+
+Je le garderais aussi quand la lisibilite compte plus que la
+vitesse : une structure Particule se lit et se modifie plus
+facilement qu'une demi-douzaine de tableaux paralleles a garder
+synchronises. Et quand le nombre de particules est petit, la
+difference de cache ne se voit pas du tout.

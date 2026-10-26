@@ -1,0 +1,43 @@
+30 x 10 :
+                              
+               #              
+             #####            
+            #######           
+            #######           
+           #########          
+            #######           
+            #######           
+             #####            
+               #              
+
+80 x 24 :
+                                                                                
+                                        #                                       
+                                    #########                                   
+                                  #############                                 
+                                 ###############                                
+                                #################                               
+                               ###################                              
+                               ###################                              
+                              #####################                             
+                              #####################                             
+                              #####################                             
+                              #####################                             
+                             #######################                            
+                              #####################                             
+                              #####################                             
+                              #####################                             
+                              #####################                             
+                               ###################                              
+                               ###################                              
+                                #################                               
+                                 ###############                                
+                                  #############                                 
+                                    #########                                   
+                                        #                                       
+
+Qui possède :
+La fonction creerImage reserve la memoire avec new char[] et rend l'adresse. C'est main qui recoit cette adresse et qui en devient proprietaire.
+Dans main, image1 est rendue par detruireImage(image1) apres son affichage.
+Puis image2 est rendue par detruireImage(image2) apres son affichage.
+Chaque new a bien son delete[], une seule fois, et l'image est liberee avant de quitter le programme.

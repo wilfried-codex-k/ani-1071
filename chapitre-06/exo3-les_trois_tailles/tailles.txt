@@ -1,0 +1,18 @@
+Mesures :
+Vec2 : prevu 16, mesure 16
+Particule1 : prevu 40, mesure 40
+A : prevu 5, mesure 8
+B : prevu 10, mesure 24
+C : prevu 10, mesure 16
+Particule2 (vie, etat, pos, vit) : prevu 41, mesure 48
+Particule3 (vie, pos, vit, etat) : prevu 41, mesure 48
+Particule4 (pos, vie, vit, etat) : prevu 41, mesure 48
+
+Ordres essayés :
+1. vie, etat, position, vitesse : 48 octets
+2. vie, position, vitesse, etat : 48 octets
+3. position, vie, vitesse, etat : 48 octets
+4. position, vitesse, vie (Particule1 originale, sans etat) : 40 octets
+
+Règle :
+Le processeur lit plus vite une donnée placee a une adresse multiple de sa taille (8 octets pour un double, 4 pour un int). Pour garantir cela, le compilateur insere des octets vides (le remplissage ou "padding") entre les membres. La taille totale d'une structure est donc souvent plus grande que la somme de ses membres, et elle est toujours un multiple de la taille de son plus grand membre (ici, multiple de 8).

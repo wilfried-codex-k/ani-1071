@@ -1,0 +1,35 @@
+Sortie :
+Liste initiale : 50 -> 20 -> 10 -> 30 -> 40 -> nullptr
+Nombre d'elements : 5
+
+Contient 30 ? oui
+Contient 99 ? non
+
+--- Retirer ---
+Apres retrait 50 (tete) : 20 -> 10 -> 30 -> 40 -> nullptr
+Apres retrait 30 (milieu) : 20 -> 10 -> 40 -> nullptr
+Apres retrait 99 (absent) : 20 -> 10 -> 40 -> nullptr
+
+--- Inverser ---
+Apres inversion : 40 -> 10 -> 20 -> nullptr
+
+--- Liberer ---
+Noeuds vivants avant liberer : 3
+Noeuds vivants apres liberer : 0
+
+Vivants :
+Avant liberer : 3
+Apres liberer : 0
+
+Par valeur :
+erreur.cpp:3:11: error: field has incomplete type 'Noeud'
+    3 |     Noeud suivant;
+      |           ^
+erreur.cpp:1:8: note: definition of 'Noeud' is not complete until the closing '}'
+    1 | struct Noeud {
+      |        ^
+1 error generated.
+
+Pourquoi :
+Le compilateur refuse un Noeud dans un Noeud parce qu'il ne connait pas encore la taille de la structure au moment ou il la declare. Si une structure contenait une copie d'elle-meme, il faudrait une memoire infinie pour la creer (une poupee russe sans fin).
+En revanche, il accepte un Noeud* (un pointeur) car un pointeur a une taille fixe et connue (8 octets sur une machine 64 bits). Le pointeur dit juste "quelque part en memoire, il y a un autre Noeud", sans exiger que cet autre Noeud soit colle a l'interieur de celui-ci.

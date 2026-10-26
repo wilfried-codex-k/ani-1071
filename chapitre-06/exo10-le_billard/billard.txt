@@ -1,0 +1,38 @@
+Départ :
+Rayon des billes : r = 1.0
+Position initiale bille A : {0, 0}
+Vitesse initiale bille A : {5, 0}
+Position initiale bille B : {10, 0} avec un décalage sur l'axe y.
+Vitesse initiale bille B : {0, 0} (immobile).
+
+Angles :
+Décalage 0.5 : v1={0.32, -1.23}, v2={4.68, 1.23}, angle=90.00 deg
+Décalage 1.5 : v1={2.86, -2.47}, v2={2.14, 2.47}, angle=90.00 deg
+Décalage -1.0 : v1={1.29, 2.19}, v2={3.71, -2.19}, angle=90.00 deg
+Décalage 0.0 : v1={0.00, 0.00}, v2={5.00, 0.00}, angle=0.00 deg
+
+Dessin :
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+     AAAAAAAAAAAAAAAAA                  
+                         B              
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+Ce que je constate :
+Pour tous les décalages non nuls (0.5, 1.5 et -1.0), l'angle entre les deux vitesses après le choc est exactement de 90 degrés. C'est une propriété du choc élastique entre deux objets de masse égale : la conservation de la quantité de mouvement et de l'énergie cinétique force les trajectoires à former un angle droit.
+Au décalage nul (choc de plein fouet), l'angle est de 0 degré. La bille A s'arrête complètement (v1 = {0, 0}) et transmet toute son énergie et sa vitesse à la bille B (v2 = {5, 0}). Les composantes perpendiculaires à la normale de collision sont nulles, donc la vitesse est entièrement échangée le long de cette normale.
