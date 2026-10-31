@@ -1,0 +1,21 @@
+Messages :
+defaut.cpp:9:7: error: no matching constructor for initialization of 'P'
+    9 |     P x;
+      |       ^
+defaut.cpp:5:5: note: candidate constructor not viable: requires single argument 'v', but no arguments were provided
+
+defaut.cpp:10:7: error: no matching constructor for initialization of 'P[10]'
+   10 |     P t[10];
+      |       ^
+defaut.cpp:5:5: note: candidate constructor not viable: requires single argument 'v', but no arguments were provided
+
+Avec a(0) :
+x.a = 0
+
+Avec = default :
+Le compilateur affiche un avertissement (warning: unused variable 't'), mais il compile.
+x.a vaut 91 au premier lancement, 91 au deuxieme, et 91 au troisieme.
+
+Pourquoi :
+Les deux declarations etaient refusees parce que des qu'on ecrit un constructeur (ici P(int v)), le compilateur supprime le constructeur par defaut. Il ne cree plus P() tout seul. Donc P x; et P t[10]; ne trouvent aucune fonction pour les initialiser.
+Avec = default, le compilateur genere un constructeur vide qui ne fait absolument rien. Il ne met pas a zero. La valeur 91 vient des anciennes donnees qui trainaient dans la memoire (le stack) avant que le programme ne demarre. Le fait que ce soit toujours 91 sur cette machine signifie que Windows reutilise la meme case memoire avec le meme contenu a chaque lancement. Mais ce n'est pas garanti : sur une autre machine, ou apres avoir lance d'autres programmes, ce serait une autre valeur.

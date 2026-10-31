@@ -1,0 +1,26 @@
+Vivantes :
+Avant la boucle : 0
+Tour 1 : 1 image(s) vivante(s)
+Tour 2 : 1 image(s) vivante(s)
+...
+Tour 10 : 1 image(s) vivante(s)
+Apres la boucle : 0
+Chaque image est bien detruite a la fin de son tour de boucle (grace au destructeur automatique).
+
+Dessin :
+XX                OO
+ XXX            OOO 
+   XXX        OOO   
+     XXX    OOO     
+        XXOO        
+        OOOX        
+     OOO    XXX     
+   OOO        XXX   
+ OOO            XXX 
+OO                XX
+
+Copie :
+(Colle ici le message exact du compilateur quand tu as enleve les // devant Image b = a;)
+
+Pourquoi :
+Si la copie etait permise, l'instruction Image b = a; ferait une copie membre par membre. Le pointeur pixels_ de b pointerait vers la meme memoire que celui de a. A la fin de main, le destructeur de b serait appele (liberant la memoire), puis le destructeur de a serait appele, tentant de liberer la meme memoire une deuxieme fois. C'est exactement la double liberation (double free) qui fait planter le programme. En interdisant la copie (= delete), le compilateur nous protege de cette erreur.

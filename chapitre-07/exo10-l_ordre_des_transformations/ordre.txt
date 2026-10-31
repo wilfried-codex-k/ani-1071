@@ -1,0 +1,47 @@
+Points :
+Ordre 1 (Normal) : (9.65, 3.94), (11.06, 5.35), (10.35, 6.06), (8.94, 4.65)
+Ordre 2 (Rot-Ech) : (10.00, 4.29), (11.41, 5.00), (10.00, 5.71), (8.59, 5.00)
+Ordre 3 (Trans-Rot) : (3.18, 9.55), (4.60, 10.96), (3.89, 11.67), (2.47, 10.25)
+
+Côtés et angles :
+L'ordre 1 (Normal) et l'ordre 2 (Rot-Ech) gardent un carré deforme (un rectangle) mais les angles restent droits.
+L'ordre 3 (Trans-Rot) donne un carre qui a ete deplace et tourne autour d'un mauvais point.
+
+Dessins :
+Echelle du dessin : 2 colonnes par unite, 1 ligne par unite. L'origine est au milieu de l'ecran (L/2, H/2).
+
+[Dessin 1 - Normal]
+                                        
+
+
+                                      ##
+                                      ##
+                                        
+
+
+
+[Dessin 2 - Rot-Ech]
+                                        
+
+
+                                       #
+                                     ###
+                                       #
+                                        
+
+
+
+[Dessin 3 - Trans-Rot]
+                         #####          
+
+
+
+
+
+                                        
+
+
+Carré déplacé :
+C'est l'ordre 1 (Normal) qui donne un carre qui "a l'air" d'un carre deplace normalement a la position (10, 5). 
+L'ordre 2 (Rot-Ech) fait tourner le carre d'abord, puis l'etire. Le resultat est legerement different en forme (etirement dans une autre direction).
+L'ordre 3 (Trans-Rot) deplace le carre d'abord, puis le fait tourner autour de l'origine (0,0) et non autour de son propre centre. Le carre est donc projete completement a gauche et en haut.

@@ -1,0 +1,23 @@
+Essais :
+c1 : r=200, g=100, b=50, a=255
+c2 : r=100, g=200, b=50, a=255
+c1 + c2 : r=255, g=255, b=100, a=255
+c1 * 2.0 : r=255, g=200, b=100, a=255
+lerp(c1, c2, 0.5) : r=150, g=150, b=50, a=255
+L'opacite (a) n'est pas modifiee par l'eclaircissement (* 2.0), elle reste a 255.
+
+Sans saturer :
+200 + 200 (sans saturer) = 144
+144 vient du fait qu'un unsigned char ne peut stocker que des valeurs de 0 a 255. 400 est trop grand, donc la valeur a deborde et a fait le tour (400 - 256 = 144).
+
+Empaquetage :
+c1 empaquete : C86432FF
+c3 (reconstruit) : r=200, g=100, b=50, a=255
+Aller-retour ok ? 1
+
+Message :
+couleur.cpp:14:16: error: no matching constructor for initialization of 'Couleur'
+   14 |         return { saturer(r * k), saturer(g * k), saturer(b * k), a };
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+couleur.cpp:27:5: note: candidate constructor not viable: requires single argument 'rgba', but 4 arguments were provided
+En ajoutant le constructeur qui prend 4 arguments, les accolades compilent de nouveau.

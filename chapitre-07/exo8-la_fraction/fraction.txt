@@ -1,0 +1,20 @@
+Essais :
+1/2 + 1/3 = 5/6
+1/2 - 1/3 = 1/6
+1/2 * 1/3 = 1/6
+1/2 / 1/3 = 3/2
+4/-6 = -2/3
+
+Égalités :
+1/2 == 2/4 : 1
+1/2 == 1/3 : 0
+
+Dénominateur nul :
+Quand j'essaie de creer Fraction(1, 0), la classe affiche "Erreur : denominateur nul !" et force la fraction a valoir 0/1.
+Quand j'essaie de diviser par Fraction(0, 1), le programme appelle le constructeur avec un denominateur nul, affiche la meme erreur, et renvoie 0/1.
+J'ai choisi de forcer la valeur a 0/1 (zero) pour que le programme continue de tourner sans planter, tout en prevnant l'utilisateur dans la console.
+
+Invariant :
+L'invariant est que le denominateur est toujours strictement positif, et que la fraction est toujours reduite (le PGCD du numerateur et du denominateur vaut 1).
+Cet invariant tient car la seule facon de creer ou de modifier une Fraction est de passer par son constructeur. Le constructeur s'occupe de rendre le denominateur positif (si d < 0) et de diviser le numerateur et le denominateur par leur PGCD.
+Comme toutes les operations (+, -, *, /) creent une nouvelle Fraction via ce constructeur, le resultat est toujours reduit. C'est pour cela que l'operateur == peut simplement comparer les membres (num == b.num et den == b.den) : puisque tout est toujours reduit, deux fractions egales auront forcement exactement les memes nombres.

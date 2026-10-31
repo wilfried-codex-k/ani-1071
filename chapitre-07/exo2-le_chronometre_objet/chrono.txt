@@ -1,0 +1,21 @@
+Boucle :
+total = 4999999950000000
+Durée mesurée : 0.393060 s.
+
+Le plus court :
+Les cinq durées mesurées : 0.000000200 s, 0.000000100 s, 0.000000100 s, 0.000000100 s, 0.000000100 s.
+Le plus petit écart que le Chrono distingue sur cette machine est de 100 nanosecondes (0.0000001 s). C'est la précision maximale de l'horloge steady_clock sous Windows. Parfois, un appel prend 200 nanosecondes à cause de l'imprécision du système, mais la résolution de base est de 100 ns.
+
+Message :
+chrono.cpp:52:5: error: 'this' argument to member function 'redemarrer' has type 'const Chrono', but function is not marked
+      const
+   52 |     k.redemarrer();
+      |     ^
+chrono.cpp:23:10: note: 'redemarrer' declared here
+   23 |     void redemarrer() {
+      |          ^
+1 error generated.
+
+Pourquoi :
+L'appel k.ecoule() passe parce que la méthode ecoule() est marquée const (elle ne modifie pas l'objet).
+L'appel k.redemarrer() est refusé parce que redemarrer() n'est pas const : elle modifie le membre instantDepart. Le compilateur interdit à un objet const d'appeler une méthode qui n'est pas const, car cela violerait la promesse de ne pas modifier l'objet.

@@ -1,0 +1,34 @@
+Copie :
+Image a :
+A    
+     
+     
+     
+     
+Image b :
+A    
+     
+     
+     
+    B
+Image a (apres c = a) :
+A    
+     
+     
+     
+     
+
+Vivantes :
+Vivantes dans le bloc : 3
+Vivantes apres le bloc : 0
+
+Sans le test :
+Lancement 1 - Avant : 0000028391E66520
+Lancement 1 - Apres : 0000028391E66520
+Lancement 2 - Avant : 0000028391E665E0
+Lancement 2 - Apres : 0000028391E665E0
+Lancement 3 - Avant : 0000028391E665E0
+Lancement 3 - Apres : 0000028391E665E0
+
+Pourquoi :
+Sans le test (this == &autre), l'instruction a = a commence par liberer la memoire de a (delete[] pixels_). Ensuite, elle lit les donnees de "autre" (qui est a) pour les recopier dans une nouvelle memoire. Mais comme on vient de liberer cette memoire, on lit des cases qui n'existent plus. Dans mon cas, la memoire n'a pas ete ecrasee tout de suite par Windows, donc l'image s'est affichee correctement, et l'adresse allouee etait la meme. Mais c'est un comportement indefini : sur une autre machine ou un autre jour, le programme aurait pu planter (double free) ou afficher n'importe quoi. Le test `if (this != &autre)` empeche cela en disant "si je suis en train de m'assigner a moi-meme, je ne fais rien et je rends l'objet tel quel".

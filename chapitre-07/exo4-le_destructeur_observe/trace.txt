@@ -1,0 +1,46 @@
+Prévu :
+Debut de main
+t_main nait
+t_bloc1 nait
+t_bloc2 nait
+Fin du bloc
+t_bloc2 meurt
+t_bloc1 meurt
+t_new_sans_delete nait
+t_new_avec_delete nait
+t_new_avec_delete meurt
+t_fonction nait
+Fin de la fonction
+t_fonction meurt
+Fin de main (avant return)
+t_main meurt (une premiere fois a cause de l'appel manuel)
+t_main meurt (une seconde fois, appele par le compilateur)
+
+Sortie :
+Debut de main
+t_main nait
+t_bloc1 nait
+t_bloc2 nait
+Fin du bloc
+t_bloc2 meurt
+t_bloc1 meurt
+t_new_sans_delete nait
+t_new_avec_delete nait
+t_new_avec_delete meurt
+t_fonction nait
+Fin de la fonction
+t_fonction meurt
+Fin de main (avant return)
+t_main meurt
+t_main meurt
+
+Explication :
+t_main nait au debut de main et meurt a la fin de main (appele par le compilateur).
+t_bloc1 nait dans le bloc et meurt a la fin du bloc.
+t_bloc2 nait dans le bloc et meurt a la fin du bloc, juste avant t_bloc1 (l'ordre de destruction est l'inverse de l'ordre de creation).
+t_new_sans_delete nait sur le tas (via new) mais ne meurt jamais car il n'y a pas de delete. C'est une fuite de memoire.
+t_new_avec_delete nait sur le tas et meurt immediatement apres le delete.
+t_fonction nait a l'appel de la fonction et meurt a la fin de la fonction.
+
+Appel à la main :
+La ligne t_main.~Trace(); provoque la mort de t_main une premiere fois ("t_main meurt"). Mais quand le programme quitte le main, le compilateur appelle automatiquement le destructeur, ce qui affiche "t_main meurt" une deuxieme fois. Si la classe Trace possedait de la memoire (allouee avec new dans le constructeur), cet appel manuel provoquerait une double liberation (double free) et ferait planter le programme, exactement comme au chapitre 5.

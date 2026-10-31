@@ -1,0 +1,34 @@
+Messages :
+pile.cpp:75:8: error: 'nombre' is a private member of 'Pile'
+   75 |      p.nombre = -5;
+      |        ^
+pile.cpp:7:9: note: declared private here
+    7 |     int nombre;
+      |         ^
+
+pile.cpp:76:7: error: 'tete' is a private member of 'File'
+   76 |      f.tete = 7;
+      |       ^
+pile.cpp:41:9: note: declared private here
+   41 |     int tete;
+      |         ^
+
+Essais :
+Pile apres 150 empiler : taille = 100, pleine = 1
+Pile apres 200 depiler : taille = 0, vide = 1
+File apres 150 enfiler : taille = 100, pleine = 1
+File apres 5 defiler et 10 enfiler : taille = 100
+
+Invariant de la file :
+Quoi qu'on appelle, tete, queue et nombre restent toujours valides :
+- nombre est compris entre 0 et 100.
+- tete pointe toujours vers le premier element a defiler (ou vers la case d'entree si la file est vide).
+- queue pointe toujours vers la prochaine case libre pour enfiler.
+- queue peut etre plus petit que tete (la file est circulaire, elle fait le tour).
+- La taille de la file (nombre) est toujours inferieure ou egale a 100.
+En aucun cas on ne peut avoir un nombre negatif ou un indice hors des bornes.
+
+Struct :
+Avec struct et sans private: le compilateur accepte p.nombre = -5 (car tout est public par defaut).
+Avec struct et avec private:, le compilateur refuse a nouveau (comme avec class).
+On en conclut que class et struct sont identiques a une exception pres : la visibilite par defaut. Mais des qu'on ecrit private:, les deux ferment l'acces exactement de la meme maniere.
