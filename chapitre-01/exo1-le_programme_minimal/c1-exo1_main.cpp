@@ -1,7 +1,7 @@
-#include <cstdio>
+#include <iostream>
 
 int main() {
-    printf("Votre Nom\n");
-    printf("Votre Ville\n");
+    std::cout << "ABOM MARIE LUDOVIC" << std::endl;
+    std::cout << "Ebolowa" << std::endl;
     return 0;
 }

@@ -1,6 +1,11 @@
-Avec -c, la compilation réussit : le compilateur ne fait que vérifier
-la syntaxe et produire le fichier objet. Il ne cherche pas encore la
-définition de la fonction calculer.
-Sans -c, l'édition de liens échoue car le linker ne trouve pas le
-corps de la fonction calculer. C'est donc l'éditeur de liens qui
-signale l'erreur, pas le compilateur.
+# Réponses à l'exercice 8 — L'erreur qui ne vient pas du compilateur
+
+> **Note :** Le compilateur utilisé pour cet exercice est **g++**.
+
+## 1. Tests de compilation effectués
+
+### Test 1 : Compilation séparée avec l'option `-c`
+J'ai exécuté la commande suivante :
+
+```bash
+g++ -c c1-exo8_main.cpp

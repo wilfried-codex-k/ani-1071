@@ -1,7 +1,9 @@
-#include <cstdio>
+#include <iostream>
+
 
 int main() {
-    int x;
-    printf("Bonjour\n");
+    int variableInutilisee = 42;
+
+    std::cout << "Programme de test pour les avertissements." << std::endl;
     return 0;
 }

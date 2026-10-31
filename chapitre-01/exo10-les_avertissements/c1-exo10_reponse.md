@@ -1,5 +1,10 @@
-Une erreur arrête la compilation : le programme ne peut pas être
-produit. Un avertissement signale un problème potentiel mais laisse
-la compilation se poursuivre : le programme est produit quand même.
-L'avertissement existe pour alerter le programmeur sans bloquer
-le travail.
+# Réponses à l'exercice 10 — Les avertissements (Warnings)
+
+> **Note :** Le compilateur utilisé pour cet exercice est **g++**.
+
+## 1. Commande de compilation et options utilisées
+
+J'ai compilé le programme en activant les avertissements stricts du compilateur à l'aide des options `-Wall` et `-Wextra` :
+
+```bash
+g++ -Wall -Wextra c1-exo10_main.cpp -o c1-exo10_main

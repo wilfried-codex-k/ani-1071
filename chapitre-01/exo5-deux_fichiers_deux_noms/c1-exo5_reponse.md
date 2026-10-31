@@ -1,3 +1,10 @@
-Le nom du fichier source et le nom de l'exécutable sont indépendants.
-La commande -o permet de choisir librement le nom du programme final,
-sans aucun lien avec le nom du fichier .cpp.
+# Réponse à l'exercice 5 - Deux fichiers, deux noms
+
+---
+
+## Commandes exécutées et résultats
+
+1. **Première compilation :**
+   ```bash
+   clang++ -std=c++17 -Wall c1-exo5_main.cpp -o essai_un
+   ./essai_un

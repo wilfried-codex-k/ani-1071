@@ -1,6 +1,6 @@
-#include <cstdio>
+#include <iostream>
+
 
 int main() {
-    printf("Bonjour\n");
     return 3;
 }

@@ -1,6 +1,8 @@
-#include <cstdio>
+#include <iostream>
 
 int main() {
-    printf("Bonjour\n");
+  
+    std::cout << "Test d'executable" << std::endl;
+  
     return 0;
 }
