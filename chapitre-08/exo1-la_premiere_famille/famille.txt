@@ -1,0 +1,25 @@
+Tailles :
+sizeof(Vec2) : 16
+sizeof(const char*) : 8
+sizeof(Entite) : 24
+sizeof(Ennemi) : 32
+sizeof(Joueur) : 32
+
+Écarts :
+Vec2 contient deux double de 8 octets chacun : 16 octets, sans bourrage.
+Un const char* est un pointeur : 8 octets sur cette machine 64 bits.
+Entite contient un Vec2 (16 octets) et un const char* (8 octets) : 16 + 8 = 24 octets. Aucun bourrage, car 24 est déjà un multiple de 8.
+Ennemi contient d'abord toute l'Entite (24 octets), puis son int degats (4 octets) : 24 + 4 = 28. Mais l'objet doit avoir une taille multiple de 8 (l'alignement du double et du pointeur), donc le compilateur ajoute 4 octets de bourrage à la fin : 32 octets.
+Joueur contient l'Entite (24 octets), puis son double vie (8 octets) : 24 + 8 = 32 octets. Aucun bourrage.
+Ennemi et Joueur coûtent donc la même place, 32 octets, mais pas pour la même raison : pour Ennemi, 4 octets utiles et 4 octets de bourrage, pour Joueur, 8 octets utiles.
+
+Message :
+En essayant de modifier la position d'un Ennemi depuis main (ligne e.position.x = 5.0;), le compilateur refuse :
+    famille.cpp: In function ‘int main()’:
+    famille.cpp:52:7: error: ‘Vec2 Entite::position’ is protected within this context
+       52 |     e.position.x = 5.0;
+          |       ^~~~~~~~
+    famille.cpp:11:10: note: declared protected here
+       11 |     Vec2 position;
+          |          ^~~~~~~~
+position est protected dans Entite : seules les méthodes d'Entite et des classes qui en héritent peuvent la toucher. main n'est pas de la famille, c'est « tout le reste », donc la ligne est refusée. La méthode deplacer d'Ennemi passe, parce qu'elle est écrite dans une classe dérivée : elle a le droit d'accéder à la position héritée. Ce qu'une classe dérivée peut faire par ses méthodes, l'extérieur ne le peut pas directement. La ligne refusée reste en commentaire dans famille.cpp.

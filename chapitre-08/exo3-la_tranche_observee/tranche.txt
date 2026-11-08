@@ -1,0 +1,14 @@
+Sorties :
+f (par valeur) : entite
+g (par reference) : ennemi
+h (par pointeur) : ennemi
+
+Tailles :
+sizeof(Entite) : 8
+sizeof(Ennemi) : 16
+
+Pourquoi :
+Les trois appels reçoivent le même Ennemi, mais seule la fonction f affiche « entite » : elle se trompe.
+f reçoit son paramètre par valeur : elle reçoit une copie, et cette copie est une Entite, pas un Ennemi. Le compilateur ne copie que la partie Entite de l'objet (8 octets) : c'est la tranche. La copie a aussi son propre pointeur caché vers la table des méthodes virtuelles, et ce pointeur désigne la table d'Entite. Quand f appelle nom(), virtual regarde l'objet, et l'objet est une Entite : il appelle Entite::nom, d'où « entite ».
+Ce que f a perdu : le membre degats (4 octets) et l'identité d'Ennemi (sa table, donc sa version de nom()). Les tailles le montrent : Entite fait 8 octets (le seul pointeur caché), Ennemi en fait 16 (8 de pointeur caché, 4 de degats, 4 de bourrage). Les 8 octets de différence ne sont pas dans la copie.
+g reçoit une référence et h un pointeur : ils reçoivent l'objet lui-même (ou son adresse), rien n'est copié, donc nom() trouve la version d'Ennemi et affiche « ennemi ». Les trois appels compilent sans un mot : l'erreur n'est visible que dans la sortie.

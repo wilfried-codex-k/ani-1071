@@ -1,0 +1,33 @@
+Avec virtual :
+Compilation avec -Wall -Wextra : aucun message.
+Sortie :
+    gEnnemi : 10
+    gFantome : 30
+    gRobot : 20
+Les six objets reçoivent dix appels chacun, soit 60 appels. Chaque compteur correspond à la version réellement appelée : l'unique Ennemi compte 10 (gEnnemi), les trois Fantome comptent 3 x 10 = 30 (gFantome), les deux Robot comptent 2 x 10 = 20 (gRobot). Les six objets sont rangés dans des Ennemi*, mais virtual fait regarder l'objet : chacun appelle sa propre version.
+
+Sans virtual :
+J'ai retiré virtual de deplacer dans Ennemi. Premier essai, en gardant override dans Fantome et Robot : le compilateur refuse.
+    virtuel.cpp:27:10: error: ‘void Fantome::deplacer(double)’ marked ‘override’, but does not override
+       27 |     void deplacer(double dt) override
+          |          ^~~~~~~~
+    virtuel.cpp:37:10: error: ‘void Robot::deplacer(double)’ marked ‘override’, but does not override
+       37 |     void deplacer(double dt) override
+          |          ^~~~~~~~
+Sans virtual, deplacer d'Ennemi n'est plus redéfinissable, donc override n'a plus rien à redéfinir. Pour que le programme compile, j'ai retiré le mot override dans Fantome et dans Robot (les deux méthodes deplacer restent, mais elles ne redéfinissent plus rien : elles cachent celle d'Ennemi). Il compile alors sans message, et la sortie devient :
+    gEnnemi : 60
+    gFantome : 0
+    gRobot : 0
+Les 60 appels vont tous à Ennemi::deplacer. Le compilateur choisit la méthode d'après le type du pointeur (Ennemi*), à la compilation, et ne regarde jamais l'objet. Les versions de Fantome et de Robot ne sont jamais appelées.
+
+Faute de frappe :
+Cas 1, deplacr avec override dans Fantome : refus.
+    virtuel.cpp:27:10: error: ‘void Fantome::deplacr(double)’ marked ‘override’, but does not override
+       27 |     void deplacr(double dt) override
+          |          ^~~~~~~
+override a fait son travail : il a vu que deplacr ne redéfinit rien et a refusé de compiler.
+Cas 2, deplacr sans override : le programme compile sans aucun message avec -Wall -Wextra, et la sortie est :
+    gEnnemi : 40
+    gFantome : 0
+    gRobot : 20
+Fantome::deplacr est une nouvelle méthode, que personne n'appelle. Les trois Fantome utilisent donc la version d'Ennemi : gEnnemi vaut 4 x 10 = 40 (l'Ennemi plus les trois Fantome), gFantome reste à 0, et gRobot vaut 20 comme avant. La faute passe en silence : seuls les compteurs la révèlent. C'est pour cela qu'on écrit toujours override.

@@ -1,0 +1,41 @@
+Essais :
+    maximum(3, 7) = 7
+    minimum(3, 7) = 3
+    maximum(2.5, 1.5) = 2.5
+    minimum(2.5, 1.5) = 1.5
+    clamp(15, 0, 10) = 10
+    clamp(-2.5, 0.0, 1.0) = 0.0
+    echanger sur int : a = 7, b = 3
+    echanger sur double : c = 1.5, d = 2.5
+    echanger sur Vec2 : u = (3.0, 4.0), v = (1.0, 2.0)
+    trier sur int : 1 4 5 7 9
+    trier sur string : Yaounde Zoo abricot arbre zebre
+Les cinq fonctions (echanger, maximum, minimum, clamp, trier) sont écrites une seule fois. Elles servent sur des int, des double, des Vec2 (echanger seulement) et des std::string (trier, qui emploie echanger).
+
+Messages :
+Refus 1, maximum(u, v) avec deux Vec2 :
+    generiques.cpp: In instantiation of ‘T maximum(T, T) [with T = Vec2]’:
+    generiques.cpp:79:29:   required from here
+    generiques.cpp:18:33: error: no match for ‘operator>’ (operand types are ‘Vec2’ and ‘Vec2’)
+       18 | T maximum(T a, T b) { return (a > b) ? a : b; }
+          |                              ~~~^~~~
+Le message se lit de bas en haut : « required from here » désigne la ligne 79 de generiques.cpp, l'appel maximum(u, v), qui a demandé de couler le moule avec T = Vec2. L'erreur elle-même est ligne 18, dans maximum : return (a > b) ? a : b; le moule a besoin de operator> et Vec2 n'en a pas.
+
+Refus 2, maximum(3, 7.5) :
+    generiques.cpp: In function ‘int main()’:
+    generiques.cpp:80:29: error: no matching function for call to ‘maximum(int, double)’
+       80 |     printf("%.1f\n", maximum(3, 7.5));
+          |                      ~~~~~~~^~~~~~~~
+    generiques.cpp:18:3: note: candidate: ‘template<class T> T maximum(T, T)’
+       18 | T maximum(T a, T b) { return (a > b) ? a : b; }
+          |   ^~~~~~~
+    generiques.cpp:18:3: note:   template argument deduction/substitution failed:
+    generiques.cpp:80:29: note:   deduced conflicting types for parameter ‘T’ (‘int’ and ‘double’)
+       80 |     printf("%.1f\n", maximum(3, 7.5));
+          |                      ~~~~~~~^~~~~~~~
+Cette fois la ligne désignée est l'appel lui-même, ligne 80 : maximum(3, 7.5). Le premier argument est un int et le second un double, donc T serait int et double à la fois : le compilateur ne peut pas choisir.
+Les deux lignes sont en commentaire dans generiques.cpp.
+
+Tri des chaînes :
+Ordre obtenu : Yaounde Zoo abricot arbre zebre
+Ce n'est pas l'ordre du dictionnaire : std::string se compare lettre par lettre, par code ASCII. Les majuscules (Y = 89, Z = 90) ont des codes plus petits que les minuscules (a = 97, z = 122), donc Yaounde et Zoo passent avant tous les mots en minuscules. Entre abricot et arbre, la première lettre est la même, puis b (98) vient avant r (114). Et zebre, dont le z (122) est la plus grande première lettre, est en dernier.

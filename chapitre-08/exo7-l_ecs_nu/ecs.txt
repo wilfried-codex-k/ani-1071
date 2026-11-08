@@ -1,0 +1,37 @@
+Systèmes :
+    Pas 1 : physique = 60, rendu = 100
+    Pas 2 : physique = 60, rendu = 100
+    Pas 3 : physique = 60, rendu = 100
+    Pas 4 : physique = 60, rendu = 100
+    Pas 5 : physique = 60, rendu = 100
+Les entités sont les numéros 0 à 99 : 40 décors (Transform et Sprite), 40 balles et 20 ennemis (Transform, Corps et Sprite). Le système de physique ne traite que les entités qui ont un Corps et un Transform : 40 + 20 = 60. Les décors n'ont pas de Corps, donc ils ne bougent pas. Le système de rendu traite celles qui ont un Sprite et un Transform : les 100 entités.
+Ensuite j'ai détruit les entités 5, 10, 15, ..., 50 (dix entités : sept décors, 5 à 35, et trois balles, 40, 45 et 50), puis créé cinq nouvelles balles (Transform, Corps et Sprite). Après un pas :
+    Pas 6 : physique = 62, rendu = 95
+Physique : 60 - 3 balles détruites + 5 nouvelles = 62. Rendu : 100 - 10 détruites + 5 nouvelles = 95. Les entités détruites ne sont plus comptées, parce que detruireEntite efface leurs trois drapeaux.
+
+Numéros :
+    Nouvelles entites : 50 45 40 35 30
+Les cinq nouvelles entités reçoivent 50, 45, 40, 35 et 30. La free list fonctionne comme une pile : liberer met la case libérée en tête de liste. J'ai libéré 5, 10, ..., 50 dans cet ordre, donc la tête est 50, puis 45, 40, 35, 30... et creerEntite prend toujours la tête. Le premier numéro rendu est le dernier libéré, pas le plus petit.
+
+Image :
+Tampon après le dernier pas (# décors, o balles, E ennemis, @ nouvelles balles). Les trous dans la ligne des décors (x = 5, 10, ..., 35) et dans celle des balles (x = 0, 5, 10) sont les entités détruites. Les cinq nouvelles balles (@) sont au-dessus des autres, à droite.
+
+
+
+
+
+                                  @@@@@     
+
+
+
+
+
+
+     oooo oooo ooooooooooooooooooooooooooooo
+
+
+
+
+    E E E E E E E E E E E E E E E E E E E E 
+
+    ##### #### #### #### #### #### #### ####

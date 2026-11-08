@@ -1,0 +1,35 @@
+Avec virtual :
+Compilation avec -Wall -Wextra : aucun message. Sortie :
+    Par un Ennemi* :
+    ~Fantome, taille du vecteur : 1000
+    ~Trace
+    ~Ennemi
+    Par un Fantome* :
+    ~Fantome, taille du vecteur : 1000
+    ~Trace
+    ~Ennemi
+Par l'Ennemi* comme par le Fantome*, la chaîne est complète : ~Fantome (avec la taille 1000 du vecteur), puis ~Trace (le membre de Fantome), puis ~Ennemi (la base).
+
+Sans virtual :
+J'ai retiré virtual du destructeur d'Ennemi. Sortie :
+    Par un Ennemi* :
+    ~Ennemi
+    Par un Fantome* :
+    ~Fantome, taille du vecteur : 1000
+    ~Trace
+    ~Ennemi
+Par le Fantome*, tout se passe bien. Par l'Ennemi*, seul ~Ennemi s'exécute.
+
+Avertissement :
+Le compilateur prévient, avec -Wall :
+    destructeur.cpp: In function ‘int main()’:
+    destructeur.cpp:37:5: warning: deleting object of polymorphic class type ‘Ennemi’ which has non-virtual destructor might cause undefined behavior [-Wdelete-non-virtual-dtor]
+       37 |     delete e;
+          |     ^~~~~~~~
+    destructeur.cpp:41:5: warning: deleting object of polymorphic class type ‘Fantome’ which has non-virtual destructor might cause undefined behavior [-Wdelete-non-virtual-dtor]
+       41 |     delete f;
+          |     ^~~~~~~~
+Il dit qu'on détruit par un pointeur de base un objet d'une classe polymorphe (qui a des méthodes virtuelles) dont le destructeur n'est pas virtuel, et que cela peut causer un comportement indéfini.
+
+Pourquoi :
+Avec le destructeur non virtuel, le delete par l'Ennemi* choisit le destructeur d'après le type du pointeur : ~Ennemi, et rien d'autre. Ni ~Fantome ni ~Trace ne sont affichés : ils ne s'exécutent jamais. Ce qui n'est jamais détruit, c'est tout ce que possède la partie Fantome : le membre Trace (son ~Trace n'est jamais affiché) et le std::vector<int> de mille cases, dont les 4000 octets de données sur le tas ne sont jamais rendus. C'est une fuite de mémoire, et rien ne l'annonce à l'exécution : le programme s'arrête normalement. Avec virtual, le destructeur est choisi d'après l'objet réel, donc ~Fantome s'exécute, puis ses membres sont détruits, puis ~Ennemi. Ce qui en décide, c'est le mot virtual sur le destructeur de la base : une classe faite pour être héritée doit en avoir un, même vide.

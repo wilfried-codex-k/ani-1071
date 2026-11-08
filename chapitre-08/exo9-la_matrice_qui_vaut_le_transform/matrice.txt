@@ -1,0 +1,19 @@
+Appliquer :
+J'ai tiré dix Transform (échelles uniformes et non uniformes, rotations et positions quelconques) et cent points pour chacun, avec un petit générateur pseudo-aléatoire écrit dans le programme.
+    Ecart max appliquer : 7.105e-15
+L'écart est de l'ordre de 1e-14 : c'est l'arrondi des réels, pas une vraie différence. Mat3::depuis(t).appliquer(p) et t.appliquer(p) donnent le même point.
+
+Composer :
+Pour chaque combinaison, dix couples (a, b), et le plus grand écart case par case entre Mat3::depuis(a.compose(b)) et Mat3::depuis(a) * Mat3::depuis(b) :
+    Ecart max compose, parent uniforme, enfant uniforme : 8.882e-16
+    Ecart max compose, parent uniforme, enfant non uniforme : 8.882e-16
+    Ecart max compose, parent non uniforme, enfant uniforme : 1.959e+00
+    Ecart max compose, parent non uniforme, enfant non uniforme : 1.935e+00
+Je me suis fixé un seuil de 1e-9 : en dessous, c'est de l'arrondi. Les deux premières lignes (parent uniforme) sont à 1e-16 : compose et le produit sont d'accord. Les deux dernières (parent non uniforme) sont à près de 2 : c'est une vraie différence. Ce qui décide, c'est l'échelle du parent : l'échelle de l'enfant ne change rien (lignes 1 et 2 d'accord, lignes 3 et 4 en désaccord). compose multiplie les échelles et additionne les rotations, ce qui suppose que échelle et rotation se commutent, et c'est faux dès que le parent étire différemment x et y. (Il faut aussi que l'enfant tourne : avec une rotation nulle, les deux seraient d'accord.)
+
+Le cas :
+Le cas le plus simple : a a une échelle (2, 1), une rotation 0 et une position (0, 0) ; b a une échelle (1, 1), une rotation pi/2 et une position (0, 0). Point appliqué : (1, 0).
+    compose de Transform : (0.000, 2.000)
+    produit de matrices  : (0.000, 1.000)
+    b puis a, un par un  : (0.000, 1.000)
+Pour b puis a, un par un : b tourne (1, 0) en (0, 1), puis a étire seulement x, et (0, 1) reste (0, 1). Le produit de matrices donne le même point. Le compose de Transform donne (0, 2) : il a fabriqué un Transform d'échelle (2, 1) et de rotation pi/2, qui étire d'abord (1, 0) en (2, 0) puis le tourne en (0, 2). Mais l'étirement de a doit se faire dans les axes du parent, après la rotation de l'enfant, pas avant. C'est donc la matrice qui a raison, et compose qui a tort. Un Transform garde échelle et rotation séparées et ne peut pas représenter la déformation (cisaillement) qui naît d'une échelle non uniforme suivie d'une rotation : c'est pourquoi le moteur fabrique la matrice au moment de dessiner, et ne la démêle jamais.
