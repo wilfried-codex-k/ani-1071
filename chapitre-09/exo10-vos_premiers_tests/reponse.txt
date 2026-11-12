@@ -1,0 +1,15 @@
+Les trois cas de bord que j'ai ecrits :
+Le bord bas : Clamp(0, 0, 5) doit rendre 0, la valeur égale à la borne basse ne doit pas bouger.
+Le bord haut : Clamp(5, 0, 5) doit rendre 5, la valeur égale à la borne haute ne doit pas bouger.
+Le cas dégénéré : un intervalle réduit à un seul point, Clamp(7, 2, 2), Clamp(-1, 2, 2) et Clamp(2, 2, 2) doivent tous rendre 2.
+J'ai ajouté quatre autres cas : une valeur déjà dans l'intervalle, une valeur trop haute (12), une valeur trop basse (-3), et des bornes négatives. Dans chaque assertion, la valeur attendue est écrite en premier et l'obtenue ensuite.
+
+Ce qui est tombe quand j'ai casse la fonction :
+J'ai cassé une seule ligne : if (x > haut) return haut; est devenue if (x > haut) return haut - 1;. Trois cas sont tombés :
+    RameneUneValeurTropHauteAuBordHaut : attendu 5, obtenu 4
+    IntervalleReduitAUnSeulPoint : attendu 2, obtenu 1
+    FonctionneAvecDesBornesNegatives : attendu -1, obtenu -2
+Le cas du bord haut exact, Clamp(5, 0, 5), n'est pas tombé : 5 n'est pas supérieur à 5, donc la ligne cassée n'est jamais exécutée. C'est la valeur 12, au-dessus de la borne, qui a révélé la panne. J'ai ensuite remis la ligne d'origine et tous les cas sont repassés au vert.
+
+Ce qui s'est passe avec ASSERT_EQUAL sur un flottant :
+J'ai écrit ASSERT_EQUAL(0.15, Milieu(0.1, 0.2)); et il a échoué alors que la fonction est juste : attendu 0.14999999999999999, obtenu 0.15000000000000002. Les réels ne sont pas représentables exactement en binaire : 0.1 + 0.2 donne 0.30000000000000004, et la moitié donne 0.15000000000000002, alors que le littéral 0.15 est le double le plus proche de 0.15, un cran plus bas. Les deux nombres diffèrent d'un seul bit, et ASSERT_EQUAL exige une égalité exacte. Je suis passé à ASSERT_NEAR(0.15, Milieu(0.1, 0.2), 1e-9) avec une tolérance de 1e-9 : le test repasse. La ligne ASSERT_EQUAL reste en commentaire pour garder la trace, et je ne l'emploierai plus sur des flottants.

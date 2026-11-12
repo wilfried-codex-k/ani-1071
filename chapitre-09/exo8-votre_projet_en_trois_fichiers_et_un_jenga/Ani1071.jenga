@@ -1,0 +1,9 @@
+from Jenga import *
+
+with workspace("Ani1071"):
+    configurations(['Debug', 'Release'])
+
+    with project("Ani1071"):
+        consoleapp()
+        includedirs(["include"])
+        files(["src/**.cpp"])

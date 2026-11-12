@@ -1,0 +1,10 @@
+Demarrage du programme
+Lecture de 5 notes
+La note 9 est inferieure a 10
+Note invalide : 25 (maximum 20)
+La note 7 est inferieure a 10
+Notes valides : 4
+Somme : 43
+Moyenne : 10.75
+Meilleure note : 15
+Fin du programme

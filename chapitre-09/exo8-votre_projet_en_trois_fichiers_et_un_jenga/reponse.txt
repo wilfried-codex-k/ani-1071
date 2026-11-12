@@ -1,0 +1,19 @@
+Ce que j'ai mis dans le .h et pourquoi :
+Dans include/vec2.h j'ai mis seulement ce que les autres fichiers ont besoin de SAVOIR : la structure Vec2 (avec ses membres x et y, car main.cpp doit connaître sa forme pour en créer) et les trois prototypes add, dot et length. Aucun corps de fonction : le .h dit quoi, le .cpp dit comment. Si je mettais les corps dans le .h, chaque fichier qui l'inclut en recevrait une copie, et l'éditeur de liens verrait plusieurs définitions de la même fonction (multiple definition).
+Le fichier commence par #pragma once : si un fichier inclut vec2.h deux fois (directement, ou par un autre en-tête), la structure Vec2 n'apparaît qu'une fois dans l'unité, et on évite l'erreur redefinition. Tout est rangé dans namespace ani, le nom de famille de mon projet. Je n'ai mis aucun using namespace dans le .h, parce qu'il contaminerait tous les fichiers qui l'incluent. La fonction d'aide carre n'est pas dans le .h : personne d'autre n'a besoin de la voir, elle reste dans vec2.cpp, dans un espace de noms anonyme.
+
+Le message exact quand j'ai appele l'aide depuis main :
+J'ai écrit printf("%.1f\n", carre(2.0)); dans src/main.cpp. Le message est :
+    src/main.cpp: In function 'int main()':
+    src/main.cpp:14:22: error: 'carre' was not declared in this scope
+       14 |     printf("%.1f\n", carre(2.0));
+          |                      ^~~~~
+C'est le compilateur qui parle (étape 2 de la chaîne), pas l'éditeur de liens : main.cpp ne connaît pas le nom carre, car il n'est ni dans vec2.h ni dans main.cpp. Je l'ai ensuite retirée (la ligne reste en commentaire dans main.cpp).
+J'ai essayé aussi de contourner en écrivant moi-même le prototype double carre(double x); dans main.cpp. Là le compilateur est content, mais c'est l'éditeur de liens (étape 4) qui refuse :
+    undefined reference to `carre(double)'
+    collect2: error: ld returned 1 exit status
+L'espace de noms anonyme rend la fonction invisible aux autres fichiers : le nom n'existe pas dans vec2.o pour les autres unités, donc il reste un trou impossible à combler.
+
+Les deux lignes du .jenga que j'ai ajoutees, et ce que chacune remplace :
+includedirs(["include"]) remplace l'option -I include de clang++. Elle dit où chercher les en-têtes appelés avec des chevrons, pour que #include <vec2.h> soit trouvé. Sans elle, la compilation s'arrête sur : fatal error: vec2.h: No such file or directory.
+files(["src/**.cpp"]) remplace le fait de nommer les sources à la main : clang++ -c src/vec2.cpp -o vec2.o, puis clang++ -c src/main.cpp -o main.o, puis clang++ vec2.o main.o -o programme pour lier. Jenga trouve les deux .cpp, compile chacun en un objet, et lie le tout.

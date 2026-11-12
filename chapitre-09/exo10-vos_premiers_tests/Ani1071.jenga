@@ -1,0 +1,8 @@
+from Jenga import *
+
+with workspace("Ani1071"):
+    configurations(['Debug', 'Release'])
+
+    with project("Tests"):
+        consoleapp()
+        files(["tests/**.cpp"])
