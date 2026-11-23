@@ -1,0 +1,8 @@
+Ce que fait chaque version quand je maintiens :
+Par événement, le carré avance d'un cran à l'appui, puis il reste immobile pendant le délai de répétition du système, puis il repart par à-coups, à chaque événement de répétition du clavier. Par état, il avance régulièrement dès la première image, d'un cran à chaque pas de physique, tant que la flèche est enfoncée. Par axe, il se comporte comme par état, mais le sens est calculé depuis deux flèches : droite vaut +1, gauche vaut -1, et si les deux sont tenues ensemble l'axe vaut zéro et le carré ne bouge pas. Les trois distances parcourues en trois secondes sont dans mesures.txt.
+
+Ou j'ai deja vu le defaut de la premiere :
+J'ai déjà vu ce comportement dans un champ de texte : quand je maintiens une lettre, une seule lettre s'écrit, puis rien pendant une demi-seconde, puis une rafale. C'est la répétition automatique du clavier, réglée par le système pour la saisie de texte. Elle vient du système, pas de mon code : je ne peux pas la régler, je peux seulement ne pas en dépendre. C'est aussi ce que le cours décrit : un événement de pression, un silence, puis une trentaine d'événements de répétition.
+
+Laquelle pour avancer, laquelle pour sauter, et pourquoi :
+Pour avancer, j'utilise l'état (ou l'axe qui en est calculé) : avancer est une action qui dure, et la question à poser à chaque pas est « la flèche est-elle enfoncée en ce moment ? ». L'axe est encore mieux quand il y a deux sens, car il gère l'annulation et marcherait aussi avec une manette. Pour sauter, j'utilise l'événement de pression : sauter arrive une seule fois par appui, et un événement dit exactement ce qui vient d'arriver. Avec l'état, la touche tenue ferait sauter à chaque pas de physique.
