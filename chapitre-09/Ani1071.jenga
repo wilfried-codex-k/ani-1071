@@ -1,0 +1,11 @@
+from Jenga import *
+
+with workspace("Ani1071"):
+    configurations(['Debug', 'Release'])
+
+    with project("Exo9Journal"):
+        consoleapp()
+        files(["src/*.cpp"])
+        cppdialect("c++17")
+        # On dit à Jenga de lier le module de journalisation du moteur
+        links(["NKLogger"])# Ani1071.jenga

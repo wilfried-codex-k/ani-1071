@@ -1,0 +1,10 @@
+image 1, alpha en milliemes : 920, pas faits : 1
+image 2, alpha en milliemes : 840, pas faits : 2
+image 3, alpha en milliemes : 760, pas faits : 2
+image 4, alpha en milliemes : 680, pas faits : 2
+image 5, alpha en milliemes : 600, pas faits : 2
+image 6, alpha en milliemes : 520, pas faits : 2
+image 7, alpha en milliemes : 440, pas faits : 2
+image 8, alpha en milliemes : 360, pas faits : 2
+image 9, alpha en milliemes : 280, pas faits : 2
+image 10, alpha en milliemes : 280, pas faits : 30

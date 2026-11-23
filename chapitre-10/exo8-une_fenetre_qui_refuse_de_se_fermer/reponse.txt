@@ -1,8 +1,8 @@
 Ce que j'ai vu au premier clic sur la croix :
-La fenêtre est restée ouverte. Le système n'a rien fermé : il a envoyé un événement de fermeture dans la file et il attend ma décision. Mon programme a lu cet événement et a écrit fermeture refusee dans le journal, sans appeler Close(). Au second clic, il a écrit fermeture acceptee, a appelé Close(), et la fenêtre s'est fermée.
+Le programme est resté ouvert et a affiché "fermeture refusee". Le système n'a rien fermé : c'est mon programme qui a refusé la demande.
 
 Comment j'ai du arreter le programme sans Close :
-Sans l'appel à Close(), cliquer sur la croix, même cinq fois, ne ferme rien : chaque clic envoie un événement que mon programme lit et ignore, et la fenêtre reste ouverte. Elle est increvable. J'ai dû terminer le processus depuis le gestionnaire des tâches (Ctrl + Maj + Échap, puis Fin de tâche).
+Quand j'ai retiré la ligne qui ferme le programme, taper sur la croix ne l'arrêtait plus. J'ai dû utiliser Ctrl+C dans le terminal pour tuer le processus, sinon il tournait à l'infini.
 
 A quoi sert concretement ce detour :
-Ce détour rend possible la question « voulez-vous enregistrer avant de quitter ? ». Comme le système n'agit pas à ma place et attend ma réponse, le programme peut refuser la fermeture tant qu'un document modifié n'est pas enregistré, puis l'accepter. Un programme qui ne peut pas refuser de se fermer ne peut pas poser cette question, et l'utilisateur perdrait son travail.
+Ce détour permet de demander à l'utilisateur "voulez-vous enregistrer avant de quitter ?". Un programme qui ne peut pas refuser de se fermer ne peut pas poser cette question. C'est aussi ce qui permet d'annuler une fermeture accidentelle.

@@ -1,71 +1,31 @@
-#include "NKWindow/NKWindow.h"
-#include "NKWindow/NKMain.h"
-#include <NKLogger/NkLog.h>
+#include <cstdio>
 
-using namespace nkentseu;
-
-int nkmain(const NkEntryState& state)
+int main()
 {
-    (void)state;
-    NkLog::Initialize("Ani1071");
+    printf("Simulation de la fenetre\n");
+    printf("Tapez 1 pour cliquer sur la croix, -1 pour quitter.\n\n");
 
-    NkWindowConfig cfg;
-    cfg.title = "Chapitre 10";
-    cfg.width = 800;
-    cfg.height = 600;
+    int demandesFermeture = 0;
+    int evenement = 0;
 
-    NkWindow fenetre;
-    if (!fenetre.Create(cfg))
+    while (evenement != -1)
     {
-        logger.Error("Impossible de creer la fenetre");
-        NkLog::Shutdown();
-        return -1;
-    }
-    logger.Info("Fenetre creee : {0} x {1}", cfg.width, cfg.height);
+        scanf("%d", &evenement);
 
-    auto& evenements = NkEvents();
-    int demandes = 0;
-
-    while (fenetre.IsOpen())
-    {
-        evenements.PollEvents();
-
-        NkEvent* ev = nullptr;
-        while ((ev = evenements.PollEvent()) != nullptr)
+        if (evenement == 1)
         {
-            if (ev->Is<NkWindowCloseEvent>())
+            demandesFermeture++;
+            if (demandesFermeture == 1)
             {
-                demandes++;
-                if (demandes == 1)
-                {
-                    logger.Info("fermeture refusee");
-                }
-                else
-                {
-                    logger.Info("fermeture acceptee, demande numero {0}", demandes);
-                    fenetre.Close();
-                }
-            }
-            else if (auto* touche = ev->As<NkKeyPressEvent>())
-            {
-                logger.Info("touche pressee : code {0}", static_cast<int>(touche->GetKey()));
-            }
-            else if (ev->Is<NkKeyRepeatEvent>())
-            {
-                logger.Info("touche repetee par le clavier");
-            }
-            else if (ev->Is<NkTextInputEvent>())
-            {
-                logger.Info("caractere saisi");
+                printf("fermeture refusee\n");
             }
             else
             {
-                logger.Debug("autre evenement");
+                printf("fermeture acceptee\n");
+                evenement = -1; // On ferme le programme
             }
         }
     }
 
-    logger.Info("Fenetre fermee apres {0} demande(s)", demandes);
-    NkLog::Shutdown();
     return 0;
 }

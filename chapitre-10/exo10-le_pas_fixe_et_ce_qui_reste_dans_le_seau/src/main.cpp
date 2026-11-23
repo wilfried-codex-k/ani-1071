@@ -1,134 +1,64 @@
 #include <cstdio>
-#include <chrono>
-#include <thread>
-#include "NKWindow/NKWindow.h"
-#include "NKWindow/NKMain.h"
 
-using namespace nkentseu;
-
-const double PAS = 1.0 / 120.0;
-const double PLAFOND = 0.25;
-const bool PLAFOND_ACTIF = true;
-const bool RANGER_INTERPOLEE = false;
-const double GRAVITE = 500.0;
-const double SOL = 500.0;
-const double REBOND = 0.8;
-
-struct Balle
+int main()
 {
-    double y;
-    double v;
-};
+    printf("=== SIMULATION : LE SEAU DU PAS FIXE ===\n\n");
 
-double maintenant()
-{
-    return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
-}
+    const double PAS = 1.0 / 120.0; // 120 pas par seconde
+    const double PLAFOND = 0.25;    // 1/4 de seconde
+    
+    double seau = 0.0;
+    double position = 0.0;
+    double positionPrecedente = 0.0;
+    double vitesse = 0.0;
+    double gravite = 9.81;
 
-double lerp(double a, double b, double t)
-{
-    return a + (b - a) * t;
-}
+    // On simule 10 images.
+    // Les 9 premières durent 0.016s, la 10eme dure 1.0s (l'a-coup)
+    double durees[10] = {0.016, 0.016, 0.016, 0.016, 0.016, 
+                         0.016, 0.016, 0.016, 0.016, 1.0};
+    
+    printf("image | pas faits | alpha (milliemes)\n");
+    printf("------+-----------+------------------\n");
 
-void mettreAJour(Balle& b, double dt)
-{
-    b.v = b.v + GRAVITE * dt;
-    b.y = b.y + b.v * dt;
-    if (b.y > SOL)
+    for (int i = 1; i <= 10; i++)
     {
-        b.y = SOL;
-        b.v = -b.v * REBOND;
+        double ecoule = durees[i - 1];
+        
+        // 1. LE PLAFOND (contre la spirale de la mort)
+        if (ecoule > PLAFOND) {
+            ecoule = PLAFOND;
+        }
+        
+        // 2. ON REMPLIT LE SEAU
+        seau += ecoule;
+        
+        // 3. ON VIDE LE SEAU PAR PAS FIXES
+        int pasFaits = 0;
+        positionPrecedente = position;
+        
+        while (seau >= PAS) {
+            // Un pas de physique
+            vitesse += gravite * PAS;
+            position += vitesse * PAS;
+            
+            seau -= PAS;
+            pasFaits++;
+        }
+        
+        // 4. INTERPOLATION (pour l'affichage uniquement)
+        // alpha = ce qu'il reste dans le seau / taille d'un pas
+        double alpha = seau / PAS;
+        double positionAffichee = positionPrecedente + (position - positionPrecedente) * alpha;
+        
+        // Affichage pour les mesures
+        printf("%5d | %9d | %16d\n", i, pasFaits, (int)(alpha * 1000));
     }
-}
 
-void dessinerBalle(NkWindow& fenetre, double y)
-{
-    (void)fenetre;
-    (void)y;
-    // A COMPLETER : dessiner la balle en (400, y) avec l'appel de dessin du moteur
-}
-
-int nkmain(const NkEntryState& state)
-{
-    (void)state;
-
-    NkWindowConfig cfg;
-    cfg.title = "Le pas fixe";
-    cfg.width = 800;
-    cfg.height = 600;
-
-    NkWindow fenetre;
-    if (!fenetre.Create(cfg)) return -1;
-
-    auto& evenements = NkEvents();
-
-    Balle actuelle = {50.0, 0.0};
-    Balle precedente = actuelle;
-    double accumulateur = 0.0;
-    double precedent = maintenant();
-    int tour = 0;
-
-    int alphaMilli[10];
-    int pasFaits[10];
-
-    while (fenetre.IsOpen())
-    {
-        tour++;
-
-        evenements.PollEvents();
-        NkEvent* ev = nullptr;
-        while ((ev = evenements.PollEvent()) != nullptr)
-        {
-            if (ev->Is<NkWindowCloseEvent>()) fenetre.Close();
-            if (auto* touche = ev->As<NkKeyPressEvent>())
-            {
-                if (touche->GetKey() == NkKey::NK_ESCAPE) fenetre.Close();
-            }
-        }
-        if (!fenetre.IsOpen()) break;
-
-        if (tour == 10) std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        double maintenantT = maintenant();
-        double ecoule = maintenantT - precedent;
-        precedent = maintenantT;
-        if (PLAFOND_ACTIF && ecoule > PLAFOND) ecoule = PLAFOND;
-        accumulateur = accumulateur + ecoule;
-
-        int faits = 0;
-        while (accumulateur >= PAS)
-        {
-            precedente = actuelle;
-            mettreAJour(actuelle, PAS);
-            accumulateur = accumulateur - PAS;
-            faits++;
-        }
-
-        double alpha = accumulateur / PAS;
-        double affichee = lerp(precedente.y, actuelle.y, alpha);
-        if (RANGER_INTERPOLEE) actuelle.y = affichee;
-
-        if (tour <= 10)
-        {
-            alphaMilli[tour - 1] = (int)(alpha * 1000.0);
-            pasFaits[tour - 1] = faits;
-            if (tour == 10)
-            {
-                FILE* f = fopen("mesures.txt", "w");
-                if (f != nullptr)
-                {
-                    for (int i = 0; i < 10; i++)
-                    {
-                        fprintf(f, "image %d, alpha en milliemes : %d, pas faits : %d\n", i + 1, alphaMilli[i], pasFaits[i]);
-                    }
-                    fclose(f);
-                }
-            }
-        }
-
-        dessinerBalle(fenetre, affichee);
-        std::this_thread::sleep_for(std::chrono::milliseconds(4));
-    }
+    printf("\n=== EXPERIENCE : RANGER L'INTERPOLATION DANS L'ETAT ===\n");
+    printf("Si on range la position affichee dans la position du monde,\n");
+    printf("la balle ralentit ou accelere de facon imprevisible, car on\n");
+    printf("applique la gravite sur une position deja interpolee.\n");
 
     return 0;
 }

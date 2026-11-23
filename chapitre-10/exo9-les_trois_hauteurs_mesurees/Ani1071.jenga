@@ -1,8 +1,39 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Ani1071 - workspace Jenga"""
+
 from Jenga import *
+from Jenga.GlobalToolchains import RegisterJengaGlobalToolchains
 
 with workspace("Ani1071"):
-    configurations(['Debug', 'Release'])
+    RegisterJengaGlobalToolchains()
+    configurations(["Debug", "Release"])
+    targetoses([
+        TargetOS.WINDOWS,
+    ])
+    targetarchs([
+        TargetArch.X86_64,
+    ])
 
-    with project("TroisHauteurs"):
-        windowedapp()
-        files(["src/**.cpp"])
+    with project("Ani1071"):
+        consoleapp()
+        language("C++")
+        cppdialect("C++17")
+        # On ne met plus de location("Ani1071/") ici !
+        files(["src/**.cpp", "src/**.c"])
+        includedirs(["include"])
+        objdir("%{wks.location}/Build/Obj/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
+        targetdir("%{wks.location}/Build/Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
+
+        with filter("system:Windows"):
+            pass
+
+        with filter("config:Debug"):
+            defines(["_DEBUG", "DEBUG"])
+            optimize("Off")
+            symbols(True)
+
+        with filter("config:Release"):
+            defines(["NDEBUG"])
+            optimize("Speed")
+            symbols(False)

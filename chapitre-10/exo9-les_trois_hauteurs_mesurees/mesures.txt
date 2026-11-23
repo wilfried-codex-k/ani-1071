@@ -1,0 +1,3 @@
+par evenement, 3 secondes : 380 pixels
+par etat, 3 secondes : 900 pixels
+par axe, 3 secondes : 900 pixels
